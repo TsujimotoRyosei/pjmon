@@ -4,8 +4,8 @@ import threading
 
 def playerpm():
     player_name = input('プレイヤーの名前を入力してください:')
-    player_hp = int(random.randrange(50,101))
-    player_mp = int(random.randrange(70,101))
+    player_hp = int(random.randrange(60,101))
+    player_mp = int(random.randrange(80,101))
     player_hp2 = player_hp
     player_mp2 = player_mp
     count = int(0)
