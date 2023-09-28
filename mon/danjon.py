@@ -89,10 +89,10 @@ def battle(monster_name: str, monster_hp: int, player_name: str, player_hp: int,
             else:
                 print('魔法を使うことができない')
         elif player_ch == '3':  #回復を選んだ場合
-            player_rc2 = 0
-            player_rc3 = 0
-            player_c1 = 0
-            player_c2 = 0
+            player_rc2 = 0      #HPの回復量
+            player_rc3 = 0      #MPの回復量
+            player_c1 = 0       #HP回復した回数
+            player_c2 = 0       #MP回復した回数
             if player_hp == player_hp2 and player_mp == player_mp2:
                 print(str(player_name) + 'のHPとMPはMAXである')
                 print()
