@@ -20,13 +20,13 @@ def monsterbox(player_name: str, player_level: int, player_hp: int, player_hp2: 
         monster_hp = int(random.randrange(30,41))
         battle(monster[0], monster_hp, player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count, down)
     if count == 1: #ゴブリン
-        monster_hp = int(random.randrange(40,51))
+        monster_hp = int(random.randrange(51,61))
         battle(monster[1], monster_hp, player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count, down)
     if count == 2: #オーク
-        monster_hp = int(random.randrange(60,81))
+        monster_hp = int(random.randrange(80,91))
         battle(monster[2], monster_hp, player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count, down)
     if count == 3: #ドラゴン
-        monster_hp = int(random.randrange(100,151))
+        monster_hp = int(random.randrange(150,201))
         battle(monster[3], monster_hp, player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count, down)
 
 def battle(monster_name: str, monster_hp: int, player_name: str, player_level: int, player_hp: int, player_hp2: int, player_mp: int, player_mp2: int, count: int, down: int):
@@ -38,8 +38,6 @@ def battle(monster_name: str, monster_hp: int, player_name: str, player_level: i
         player_qh = str(random.randrange(0,11))
         if count > 0 and down == 1: #レベルアップによる攻撃力アップ,HPとMPの回復&上限アップ
             player_level += 1
-            player_at += 10
-            player_mt += 10
             player_hp = player_hp2
             player_mp = player_mp2
             player_hp += 10
@@ -47,6 +45,9 @@ def battle(monster_name: str, monster_hp: int, player_name: str, player_level: i
             player_hp2 = player_hp
             player_mp2 = player_mp
             down = 0
+        if count > 0:
+            player_at += player_level * 5
+            player_mt += player_level * 5
         print(str(monster_name)+'のHP:' + str(monster_hp))
         print(str(player_name) + 'のレベル:' + str(player_level))
         print(str(player_name) + 'のHP:' + str(player_hp) + ' ' + str(player_name) + 'のMP:' + str(player_mp))
