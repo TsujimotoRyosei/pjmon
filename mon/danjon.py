@@ -91,31 +91,39 @@ def battle(monster_name: str, monster_hp: int, player_name: str, player_hp: int,
         elif player_ch == '3':  #回復を選んだ場合
             player_rc2 = 0
             player_rc3 = 0
+            player_c1 = 0
+            player_c2 = 0
             if player_hp == player_hp2 and player_mp == player_mp2:
                 print(str(player_name) + 'のHPとMPはMAXである')
+                print()
+                continue
             if player_mp < player_mp2:
-                if player_hp + player_rc <= player_hp2: #回復量がHPの上限以下の場合
+                if player_hp + player_rc <= player_hp2 and player_c1 == 0: #回復量がHPの上限以下の場合
                     player_hp += player_rc
-                if player_mp + player_rc <= player_mp2: #回復量がMPの上限より以下の場合
+                    player_c1 = 1
+                if player_mp + player_rc <= player_mp2 and player_c2 == 0: #回復量がMPの上限より以下の場合
                     player_mp += player_rc
-                if player_hp + player_rc > player_hp2: #回復量がHPの上限を超えた場合
+                    player_c2 = 1
+                if player_hp + player_rc > player_hp2 and player_c1 == 0: #回復量がHPの上限を超えた場合
                     player_rc2 = player_hp2 - player_hp
                     player_hp = player_hp2
-                if player_mp + player_rc > player_mp2: #回復量がMPの上限を超えた場合
+                    player_c1 = 1
+                if player_mp + player_rc > player_mp2 and player_c2 == 0: #回復量がMPの上限を超えた場合
                     player_rc3 = player_mp2 - player_mp
                     player_mp = player_mp2
+                    player_c2 = 1
                 if player_rc2 == 0 and player_rc3 == 0: #回復量が両方超えなかった場合
                     print(str(player_name) + 'の' + 'HPとMPが' + str(player_rc) + '回復した')
-                elif player_rc2 != 0 and player_rc3 == 0:
-                    print(str(player_name) + 'のHPが' + str(player_rc2) + ',MPが' + str(player_rc) + '回復した') #回復量がHPだけ超えた場合
-                elif player_rc2 == 0 and player_rc3 != 0:
-                    print(str(player_name) + 'のHPが' + str(player_rc) + ',MPが' + str(player_rc3) + '回復した') #回復量がMPだけ超えた場合
-                elif player_rc2 != 0 and player_rc3 != 0:
-                    print(str(player_name) + 'のHPが' + str(player_rc2) + ',MPが' + str(player_rc3) + '回復した') #回復量が両方超えた場合
-            if player_mp == player_mp2 and player_hp != player_hp2:
+                if player_rc2 != 0 and player_rc3 == 0: #回復量がHPだけ超えた場合
+                    print(str(player_name) + 'のHPが' + str(player_rc2) + ',MPが' + str(player_rc) + '回復した') 
+                if player_rc2 == 0 and player_rc3 != 0: #回復量がMPだけ超えた場合
+                    print(str(player_name) + 'のHPが' + str(player_rc) + ',MPが' + str(player_rc3) + '回復した')
+                if player_rc2 != 0 and player_rc3 != 0: #回復量が両方超えた場合
+                    print(str(player_name) + 'のHPが' + str(player_rc2) + ',MPが' + str(player_rc3) + '回復した')
+            if player_mp == player_mp2 and player_hp != player_hp2 and player_c1 == 0:
                 if player_hp + player_rc <= player_hp2: #回復量がHPの上限以下の場合
                     player_hp += player_rc
-                if player_hp + player_rc > player_hp2: #回復量がHPの上限を超えた場合
+                elif player_hp + player_rc > player_hp2: #回復量がHPの上限を超えた場合
                     player_rc2 = player_hp2 - player_hp
                     player_hp = player_hp2
                 if player_rc2 == 0: #回復量がHPの上限を超えなかった場合
