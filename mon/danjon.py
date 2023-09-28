@@ -4,31 +4,32 @@ import threading
 
 def playerpm():
     player_name = input('プレイヤーの名前を入力してください:')
+    player_level = 1
     player_hp = int(random.randrange(50,101))
     player_mp = int(random.randrange(70,101))
     player_hp2 = player_hp
     player_mp2 = player_mp
     count = int(0)
     down = int(0)
-    monsterbox(player_name, player_hp, player_hp2, player_mp, player_mp2, count, down)
+    monsterbox(player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count, down)
 
-def monsterbox(player_name: str, player_hp: int, player_hp2: int, player_mp: int, player_mp2: int, count: int, down: int):
+def monsterbox(player_name: str, player_level: int, player_hp: int, player_hp2: int, player_mp: int, player_mp2: int, count: int, down: int):
     monster = ['スライム', 'ゴブリン', 'オーク', 'ドラゴン']
     print(str(monster[count]) + 'が出現した')
     if count == 0: #スライム
         monster_hp = int(random.randrange(30,41))
-        battle(monster[0], monster_hp, player_name, player_hp, player_hp2, player_mp, player_mp2, count, down)
+        battle(monster[0], monster_hp, player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count, down)
     if count == 1: #ゴブリン
         monster_hp = int(random.randrange(40,51))
-        battle(monster[1], monster_hp, player_name, player_hp, player_hp2, player_mp, player_mp2, count, down)
+        battle(monster[1], monster_hp, player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count, down)
     if count == 2: #オーク
         monster_hp = int(random.randrange(60,81))
-        battle(monster[2], monster_hp, player_name, player_hp, player_hp2, player_mp, player_mp2, count, down)
+        battle(monster[2], monster_hp, player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count, down)
     if count == 3: #ドラゴン
         monster_hp = int(random.randrange(100,151))
-        battle(monster[3], monster_hp, player_name, player_hp, player_hp2, player_mp, player_mp2, count, down)
+        battle(monster[3], monster_hp, player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count, down)
 
-def battle(monster_name: str, monster_hp: int, player_name: str, player_hp: int, player_hp2: int, player_mp: int, player_mp2: int, count: int, down: int):
+def battle(monster_name: str, monster_hp: int, player_name: str, player_level: int, player_hp: int, player_hp2: int, player_mp: int, player_mp2: int, count: int, down: int):
     while(monster_hp > 0):
         player_at = int(random.randrange(10,16))  #プレイヤーの攻撃
         player_mt = int(random.randrange(20,31))  #プレイヤーの魔法攻撃
@@ -36,6 +37,7 @@ def battle(monster_name: str, monster_hp: int, player_name: str, player_hp: int,
         monster_ch = str(random.randrange(0,2))   #モンスターの選択
         player_qh = str(random.randrange(0,11))
         if count > 0 and down == 1: #レベルアップによる攻撃力アップ,HPとMPの回復&上限アップ
+            player_level += 1
             player_at += 10
             player_mt += 10
             player_hp = player_hp2
@@ -45,7 +47,8 @@ def battle(monster_name: str, monster_hp: int, player_name: str, player_hp: int,
             player_hp2 = player_hp
             player_mp2 = player_mp
             down = 0
-        print(str(monster_name)+'のHPは' + str(monster_hp))
+        print(str(monster_name)+'のHP:' + str(monster_hp))
+        print(str(player_name) + 'のレベル:' + str(player_level))
         print(str(player_name) + 'のHP:' + str(player_hp) + ' ' + str(player_name) + 'のMP:' + str(player_mp))
         print('1:剣で攻撃 2:魔法で攻撃(MP20) 3:回復 4:逃げる')
         player_ch = input()
@@ -151,6 +154,7 @@ def battle(monster_name: str, monster_hp: int, player_name: str, player_hp: int,
         if monster_hp > 0: #表示を見やすくするため
             print()
     print(str(monster_name) + 'を倒した')
+    print(str(player_name) + 'のレベルが1上がった' )
     print()
     count += 1
     down = 1
@@ -158,7 +162,7 @@ def battle(monster_name: str, monster_hp: int, player_name: str, player_hp: int,
         print('すべてのモンスターを倒した')
         sys.exit(0)
     elif count < 4: #まだすべてのモンスターを倒していない場合
-        monsterbox(player_name, player_hp, player_hp2, player_mp, player_mp2, count, down)
+        monsterbox(player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count, down)
 
 thread = threading.Thread(target = playerpm)
 thread.start()
