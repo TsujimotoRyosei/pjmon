@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,10 @@
 </head>
 <body>
     <h1>ダンジョン</h1>
-    <form action="/cgi-bin/danjon.py" method="POST"></form>
-    <button>スタート</button>
+    <form action="/cgi-bin/danjon.py" method="POST">
+        <label for="username">ユーザー名：</label>
+        <input type="text" id="username" name="username" required>
+        <button>スタート</button>
+    </form>
 </body>
 </html>
