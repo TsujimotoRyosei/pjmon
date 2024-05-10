@@ -1,12 +1,9 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 import random
-import sys, cgi
+import sys
 import threading
 
 def playerpm():
-    form = cgi.FieldStorage()
-    player_name = form.getfirst('username')
+    player_name = input('プレイヤーの名前を入力してください:')
     player_level = 1
     player_hp = int(random.randrange(50,101))
     player_mp = int(random.randrange(70,101))
@@ -168,5 +165,5 @@ def battle(monster_name: str, monster_hp: int, player_name: str, player_level: i
     elif count < 4: #まだすべてのモンスターを倒していない場合
         monsterbox(player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count, down)
 
-if __name__ == '__main__':
-    playerpm()
+thread = threading.Thread(target = playerpm)
+thread.start()
