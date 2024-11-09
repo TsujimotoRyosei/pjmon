@@ -154,14 +154,9 @@ def battle(monster_name: str, monster_hp: int, player_name: str, player_level: i
     elif count < 4: #まだすべてのモンスターを倒していない場合
         monsterbox(player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count, down)
 
-<<<<<<< HEAD
-thread = threading.Thread(target = playerpm)
-thread.start()
-=======
 def main():
     player_data = playerpm()
     monsterbox(*player_data)
 
 if __name__ == "__main__":
     main()
->>>>>>> 027c2d9 (初回のコミット)
