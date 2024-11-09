@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>バトル画面</title>
+    <style>
+      #action-buttons {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>バトル開始</h1>
+    <p id="monster-appearance">モンスターが出現しました！</p>
+    <div id="battle-log"></div>
+
+    <!-- タップして選択肢を表示 -->
+    <button onclick="showActionButtons()">タップして行動を選ぶ</button>
+
+    <!-- 行動選択ボタン -->
+    <div id="action-buttons">
+      <button onclick="takeAction('attack')">攻撃</button>
+      <button onclick="takeAction('magic')">魔法</button>
+      <button onclick="takeAction('heal')">回復</button>
+      <button onclick="takeAction('run')">逃げる</button>
+    </div>
+
+    <!-- 次のメッセージを表示するためのボタン -->
+    <button id="next-message" onclick="nextMessage()" style="display: none">
+      次のメッセージ
+    </button>
+
+    <script>
+      // ボタンを表示する
+      function showActionButtons() {
+        document.getElementById("action-buttons").style.display = "block";
+      }
+
+      // サーバーに行動リクエストを送信
+      async function takeAction(action) {
+        const response = await fetch(`/battle_action?action=${action}`);
+        const result = await response.text();
+        document.getElementById("battle-log").innerHTML += `<p>${result}</p>`;
+
+        // 行動選択を隠し、次のメッセージボタンを表示
+        document.getElementById("action-buttons").style.display = "none";
+        document.getElementById("next-message").style.display = "block";
+      }
+
+      // 次のメッセージボタンが押されたとき
+      function nextMessage() {
+        document.getElementById("next-message").style.display = "none";
+        document.getElementById("action-buttons").style.display = "block";
+      }
+    </script>
+  </body>
+</html>

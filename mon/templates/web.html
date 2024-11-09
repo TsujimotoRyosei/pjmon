@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ダンジョン</title>
+  </head>
+  <body>
+    {% if player.username %}
+    <h1>プレイヤー情報</h1>
+    <p>プレイヤー名：{{ player.username }}</p>
+    <p>プレイヤーレベル：{{ player.level }}</p>
+    <p>HP：{{ player.hp }}</p>
+    <p>MP：{{ player.mp }}</p>
+    <form action="/start_game" method="post">
+      <input type="hidden" name="username" value="{{ player.username }}" />
+      <button type="submit">ゲーム開始</button>
+    </form>
+    {% else %}
+    <h1>ダンジョン</h1>
+    <form action="/player_status" method="post">
+      <label for="username">プレイヤーの名前を入力してください:</label>
+      <input type="text" id="username" name="username" required />
+      <button type="submit">送信</button>
+    </form>
+    {% endif %}
+  </body>
+</html>
