@@ -1,11 +1,14 @@
 from fastapi import FastAPI, Request, Form, Query
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from danjon import playerpm, monsterbox, battle
 import uvicorn
 
 app = FastAPI()
 templates = Jinja2Templates(directory="mon/templates")
+
+app.mount("/monster_images", StaticFiles(directory="mon/monster_images"), name="monster_images")
 
 game_state = {"player_data": None, "monster_data": None, "initial_appearance": True}
 
