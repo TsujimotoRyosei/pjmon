@@ -1,5 +1,4 @@
 import random
-import sys
 
 def playerpm():
     player_name = "プレイヤー"
@@ -12,18 +11,15 @@ def playerpm():
     return player_data
 
 def monsterbox(player_data):
-    player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count, down = player_data
     monsters = ['スライム', 'ゴブリン', 'オーク', 'ドラゴン']
-    if count == 0:
-        monster_hp = random.randint(30, 41)
-    elif count == 1:
-        monster_hp = random.randint(51, 61)
-    elif count == 2:
-        monster_hp = random.randint(80, 91)
-    elif count == 3:
-        monster_hp = random.randint(150, 201)
-    monster_data = [monsters[count], monster_hp]
-    return monster_data, player_data
+    count = player_data[6]  # 現在のモンスターのインデックス
+    if count < len(monsters):
+        monster_hp_ranges = [(30, 41), (51, 61), (80, 91), (150, 201)]
+        monster_hp = random.randint(*monster_hp_ranges[count])
+        monster_data = [monsters[count], monster_hp]
+        return monster_data, player_data
+    return None, player_data  # ドラゴンを倒した場合
+
 
 def convert_newlines_to_br(text):
     return text.replace("\n", "<br>")
@@ -66,7 +62,7 @@ def battle(monster_data, player_data, player_ch):
     
     if monster_hp > 0:
         # モンスターが攻撃
-        monster_attack = random.randint(5, 15)  # モンスターの攻撃力
+        monster_attack = random.randint(10, 16)  # モンスターの攻撃力
         player_hp -= monster_attack
         action_result += f"{monster_name}が攻撃してきた！\n{player_name}は{monster_attack}のダメージを受けた。\n\n"    
 

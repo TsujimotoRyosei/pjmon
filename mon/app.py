@@ -31,9 +31,17 @@ async def player_status(request: Request, username: str = Form(...)):
 async def start_game(request: Request):
     game_state["monster_data"], game_state["player_data"] = monsterbox(game_state["player_data"])
     game_state["initial_appearance"] = True  # 初回のモンスター出現時のみTrue
-    monster_image = random.choice(["slime/slime1.jpeg", "slime/slime2.jpeg"])
     monster_data = {"name": game_state["monster_data"][0], 
                     "hp": game_state["monster_data"][1]}
+    # スライムの場合はスライムの画像を表示
+    if game_state["monster_data"][0] == "スライム":
+        monster_image = random.choice(["slime/slime1.jpeg", "slime/slime2.jpeg"])
+    elif game_state["monster_data"][0] == "ゴブリン":
+        monster_image = random.choice(["goblin/goblin1.jpeg", "goblin/goblin2.jpeg"])
+    elif game_state["monster_data"][0] == "オーク":
+        monster_image = random.choice(["orc/orc1.jpeg", "orc/orc2.jpeg"])
+    elif game_state["monster_data"][0] == "ドラゴン":
+        monster_image = random.choice(["dragon/dragon1.jpeg", "dragon/dragon2.jpeg"])
     return templates.TemplateResponse("battle.html", {"request": request, "player": game_state["player_data"], "monster": monster_data, "initial_appearance": game_state["initial_appearance"],"monster_image": f"/monster_images/{monster_image}",})
 
 @app.get("/battle_action", response_class=JSONResponse)
@@ -43,6 +51,14 @@ async def battle_action(request: Request, action: str = Query(...)):
 
     result, updated_data = battle(game_state["monster_data"], game_state["player_data"], action)
     game_state["monster_data"], game_state["player_data"] = updated_data
+    
+    # 新しいモンスターを生成
+    if game_state["monster_data"] is None and game_state["player_data"]:
+        game_state["monster_data"], game_state["player_data"] = monsterbox(game_state["player_data"])
+        if game_state["monster_data"] is None:
+            # 全てのモンスターを倒した場合
+            return {"result": "ゲームクリア！ おめでとうございます！", "monster": None, "player": None}
+
 
     # モンスターが倒された場合、HPを None として返す
     monster_data = {
@@ -51,7 +67,9 @@ async def battle_action(request: Request, action: str = Query(...)):
     }
     player_data = {
         "hp": game_state["player_data"][2],
-        "mp": game_state["player_data"][4]
+        "mp": game_state["player_data"][4],
+        "level": game_state["player_data"][1]
+
     }
 
     return {"result": result, "monster": monster_data, "player": player_data}
