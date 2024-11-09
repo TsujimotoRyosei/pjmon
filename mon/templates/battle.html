@@ -4,53 +4,77 @@
     <meta charset="UTF-8" />
     <title>バトル画面</title>
     <style>
-      #action-buttons {
-        display: none;
+      .container {
+        display: flex;
+        justify-content: space-between;
+      }
+      .battle-area {
+        flex-grow: 1;
+      }
+      .status-area {
+        width: 200px;
+        margin-left: 20px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background-color: #f9f9f9;
       }
     </style>
   </head>
   <body>
     <h1>バトル開始</h1>
-    <p id="monster-appearance">モンスターが出現しました！</p>
-    <div id="battle-log"></div>
+    <div class="container">
+      <div class="battle-area">
+        {% if initial_appearance %}
+        <p id="monster-appearance">{{ monster.name }} が出現しました！</p>
+        {% endif %}
+        <p
+          id="monster-hp"
+          style="display: {{ 'block' if monster.hp else 'none' }}"
+        >
+          {{ monster.name }}のHP: <span id="current-hp">{{ monster.hp }}</span>
+        </p>
+        <div id="battle-log">{{ result if result else "" }}</div>
+        <div>
+          <button onclick="takeAction('attack')">攻撃</button>
+          <button onclick="takeAction('magic')">魔法</button>
+          <button onclick="takeAction('heal')">回復</button>
+          <button onclick="takeAction('run')">逃げる</button>
+        </div>
+      </div>
 
-    <!-- タップして選択肢を表示 -->
-    <button onclick="showActionButtons()">タップして行動を選ぶ</button>
-
-    <!-- 行動選択ボタン -->
-    <div id="action-buttons">
-      <button onclick="takeAction('attack')">攻撃</button>
-      <button onclick="takeAction('magic')">魔法</button>
-      <button onclick="takeAction('heal')">回復</button>
-      <button onclick="takeAction('run')">逃げる</button>
+      <div class="status-area">
+        <h2>プレイヤーステータス</h2>
+        <p>名前: {{ player[0] }}</p>
+        <p>レベル: <span id="player-level">{{ player[1] }}</span></p>
+        <p>HP: <span id="player-hp">{{ player[2] }}</span></p>
+        <p>MP: <span id="player-mp">{{ player[4] }}</span></p>
+      </div>
     </div>
 
-    <!-- 次のメッセージを表示するためのボタン -->
-    <button id="next-message" onclick="nextMessage()" style="display: none">
-      次のメッセージ
-    </button>
-
     <script>
-      // ボタンを表示する
-      function showActionButtons() {
-        document.getElementById("action-buttons").style.display = "block";
-      }
-
-      // サーバーに行動リクエストを送信
       async function takeAction(action) {
         const response = await fetch(`/battle_action?action=${action}`);
-        const result = await response.text();
-        document.getElementById("battle-log").innerHTML += `<p>${result}</p>`;
+        const data = await response.json();
 
-        // 行動選択を隠し、次のメッセージボタンを表示
-        document.getElementById("action-buttons").style.display = "none";
-        document.getElementById("next-message").style.display = "block";
-      }
+        document.getElementById(
+          "battle-log"
+        ).innerHTML = `<p>${data.result}</p>`;
+        document.getElementById("monster-appearance").style.display = "none";
 
-      // 次のメッセージボタンが押されたとき
-      function nextMessage() {
-        document.getElementById("next-message").style.display = "none";
-        document.getElementById("action-buttons").style.display = "block";
+        if (data.monster && data.monster.hp !== null) {
+          document.getElementById("current-hp").textContent = data.monster.hp;
+          document.getElementById("monster-hp").style.display = "block";
+        } else {
+          document.getElementById("monster-hp").style.display = "none";
+        }
+
+        document.getElementById("player-hp").textContent = data.player.hp;
+        document.getElementById("player-mp").textContent = data.player.mp;
+
+        if (data.player && data.player.level) {
+          document.getElementById("player-level").textContent =
+            data.player.level;
+        }
       }
     </script>
   </body>
