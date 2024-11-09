@@ -4,6 +4,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from danjon import playerpm, monsterbox, battle
 import uvicorn
+import random
 
 app = FastAPI()
 templates = Jinja2Templates(directory="mon/templates")
@@ -30,9 +31,10 @@ async def player_status(request: Request, username: str = Form(...)):
 async def start_game(request: Request):
     game_state["monster_data"], game_state["player_data"] = monsterbox(game_state["player_data"])
     game_state["initial_appearance"] = True  # 初回のモンスター出現時のみTrue
+    monster_image = random.choice(["slime/slime1.jpeg", "slime/slime2.jpeg"])
     monster_data = {"name": game_state["monster_data"][0], 
                     "hp": game_state["monster_data"][1]}
-    return templates.TemplateResponse("battle.html", {"request": request, "player": game_state["player_data"], "monster": monster_data, "initial_appearance": game_state["initial_appearance"]})
+    return templates.TemplateResponse("battle.html", {"request": request, "player": game_state["player_data"], "monster": monster_data, "initial_appearance": game_state["initial_appearance"],"monster_image": f"/monster_images/{monster_image}",})
 
 @app.get("/battle_action", response_class=JSONResponse)
 async def battle_action(request: Request, action: str = Query(...)):

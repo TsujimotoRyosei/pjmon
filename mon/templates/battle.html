@@ -23,10 +23,11 @@
   <body>
     <h1>バトル開始</h1>
     <img
-      src="/monster_images/slime.jpeg"
-      alt="スライム"
+      src="{{ monster_image }}"
+      alt="{{ monster.name }}"
       style="width: 150px; height: auto; margin-bottom: 20px"
     />
+
     <div class="container">
       <div class="battle-area">
         {% if initial_appearance %}
@@ -48,7 +49,7 @@
       </div>
 
       <div class="status-area">
-        <h2>プレイヤーステータス</h2>
+        <h2>ステータス画面</h2>
         <p>名前: {{ player[0] }}</p>
         <p>レベル: <span id="player-level">{{ player[1] }}</span></p>
         <p>HP: <span id="player-hp">{{ player[2] }}</span></p>
