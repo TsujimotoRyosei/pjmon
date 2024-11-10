@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ダンジョン - プレイヤー情報</title>
+  </head>
+  <body>
+    <h1>プレイヤー情報</h1>
+    <p>
+      <strong>冒険の始まり：</strong>
+      <br />
+      あなたは勇敢な冒険者として、モンスターが潜む不気味なダンジョンに足を踏み入れました。
+      <br />
+      数々の危険が待ち受ける中、持てる力を駆使して全てのモンスターを倒し、栄光を手にするのです！
+    </p>
+    <p>プレイヤー名：{{ player.username }}</p>
+    <p>レベル：{{ player.level }}</p>
+    <p>HP：{{ player.hp }}</p>
+    <p>MP：{{ player.mp }}</p>
+    <form action="/start_game" method="post">
+      <input type="hidden" name="username" value="{{ player.username }}" />
+      <button type="submit">ゲーム開始</button>
+    </form>
+  </body>
+</html>

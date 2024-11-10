@@ -2,26 +2,23 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <title>ダンジョン</title>
+    <title>ダンジョン - プレイヤー登録</title>
   </head>
   <body>
-    {% if player %}
-    <h1>プレイヤー情報</h1>
-    <p>プレイヤー名：{{ player.username }}</p>
-    <p>レベル：{{ player.level }}</p>
-    <p>HP：{{ player.hp }}</p>
-    <p>MP：{{ player.mp }}</p>
-    <form action="/start_game" method="post">
-      <input type="hidden" name="username" value="{{ player.username }}" />
-      <button type="submit">ゲーム開始</button>
-    </form>
-    {% else %}
     <h1>ダンジョン</h1>
+    <p>
+      <strong>ゲームの概要：</strong>
+      <br />
+      不気味なダンジョンが目の前に広がっています。
+      <br />
+      このダンジョンには恐ろしいモンスターが潜んでおり、無事に脱出するにはすべてのモンスターを倒さなければなりません。
+      <br />
+      あなたはこの冒険を無事に終え、栄光を掴むことができるでしょうか？
+    </p>
     <form action="/player_status" method="post">
       <label for="username">プレイヤーの名前を入力してください:</label>
       <input type="text" id="username" name="username" required />
       <button type="submit">確定</button>
     </form>
-    {% endif %}
   </body>
 </html>

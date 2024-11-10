@@ -25,7 +25,7 @@ async def player_status(request: Request, username: str = Form(...)):
                    "level": game_state["player_data"][1],
                    "hp": game_state["player_data"][2], 
                    "mp": game_state["player_data"][4]}
-    return templates.TemplateResponse("home.html", {"request": request, "player": player_data})
+    return templates.TemplateResponse("player_info.html", {"request": request, "player": player_data})
 
 @app.post("/start_game", response_class=HTMLResponse)
 async def start_game(request: Request):
