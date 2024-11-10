@@ -6,8 +6,7 @@ def playerpm():
     player_hp = random.randint(50, 101)
     player_mp = random.randint(70, 101)
     count = 0
-    down = 0
-    player_data = [player_name, player_level, player_hp, player_hp, player_mp, player_mp, count, down]
+    player_data = [player_name, player_level, player_hp, player_hp, player_mp, player_mp, count]
     return player_data
 
 def monsterbox(player_data):
@@ -26,19 +25,12 @@ def convert_newlines_to_br(text):
 
 def battle(monster_data, player_data, player_ch):
     monster_name, monster_hp = monster_data
-    player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count, down = player_data
+    player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count= player_data
     player_at = random.randint(10, 16)
     player_mt = random.randint(20, 31)
     player_rc = random.randint(25, 41)
     monster_ch = random.choice(['0', '1'])
     player_qh = random.choice(['0', '1'])
-
-    if count > 0 and down == 1:
-        player_level += 1
-        player_hp = player_hp2 + 10
-        player_mp = player_mp2 + 10
-        player_hp2, player_mp2 = player_hp, player_mp
-        down = 0
 
     if player_ch == 'attack':
         if player_qh == '1':
@@ -69,14 +61,17 @@ def battle(monster_data, player_data, player_ch):
     if monster_hp <= 0:
         action_result += f"{monster_name}を倒した！ \n{player_name}のレベルが1上がった。"
         count += 1
-        down = 1
-        player_data = [player_name, player_level + 1, player_hp, player_hp2, player_mp, player_mp2, count, down]
+        player_level += 1
+        player_hp = player_hp2 + 10
+        player_mp = player_mp2 + 10
+        player_hp2, player_mp2 = player_hp, player_mp
+        player_data = [player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count]
         return convert_newlines_to_br(action_result), [None, player_data]
     elif player_hp <= 0:
         return convert_newlines_to_br(f"{player_name}は倒れた。\nゲームオーバー。"), [None, None]
 
     monster_data = [monster_name, monster_hp]
-    player_data = [player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count, down]
+    player_data = [player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count]
     return convert_newlines_to_br(action_result), [monster_data, player_data]
 
 def main():
