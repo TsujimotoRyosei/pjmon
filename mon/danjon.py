@@ -31,22 +31,43 @@ def battle(monster_data, player_data, player_ch):
     player_rc = random.randint(25, 41)
     monster_ch = random.choice(['0', '1'])
     player_qh = random.choice(['0', '1'])
-
+    
+    if count > 0: #レベルアップによる攻撃力アップ
+        player_at += player_level * 5
+        player_mt += player_level * 5
+    
     if player_ch == 'attack':
         if player_qh == '1':
             player_at = int(player_at * 1.5)
-        monster_hp -= player_at
-        action_result = f"{player_name}は剣で攻撃をした。\n{monster_name}に{player_at}ダメージを与えた。\n\n"
+            action_result = f"{player_name}はクリティカルヒットを出した！\n"
+            monster_hp -= player_at
+            action_result += f"{player_name}は剣で攻撃をした。\n{monster_name}に{player_at}ダメージを与えた。\n\n"
+        else:
+            monster_hp -= player_at
+            action_result = f"{player_name}は剣で攻撃をした。\n{monster_name}に{player_at}ダメージを与えた。\n\n"
     elif player_ch == 'magic' and player_mp >= 20:
-        monster_hp -= player_mt
-        player_mp -= 20
-        action_result = f"{player_name}は魔法で攻撃をした。\n{monster_name}に{player_mt}ダメージを与えた。\n\n"
+        if player_qh == '1':
+            player_mt = int(player_mt * 2)
+            action_result = f"{player_name}はクリティカルヒットを出した！\n"
+            monster_hp -= player_mt
+            player_mp -= 20
+            action_result += f"{player_name}は魔法で攻撃をした。\n{monster_name}に{player_mt}ダメージを与えた。\n\n"
+        else:
+            monster_hp -= player_mt
+            player_mp -= 20
+            action_result = f"{player_name}は魔法で攻撃をした。\n{monster_name}に{player_mt}ダメージを与えた。\n\n"
     elif player_ch == 'heal':
-        hp_healed = min(player_rc, player_hp2 - player_hp)
-        mp_healed = min(player_rc, player_mp2 - player_mp)
-        player_hp += hp_healed
-        player_mp += mp_healed
-        action_result = f"{player_name}はHPを{hp_healed}、MPを{mp_healed}回復した。\n\n"
+        if player_qh == '1':
+            # HPとMPを全回復する
+            player_hp = player_hp2
+            player_mp = player_mp2
+            action_result = f"{player_name}はHPとMPを全回復した。\n\n"
+        else:    
+            hp_healed = min(player_rc, player_hp2 - player_hp)
+            mp_healed = min(player_rc, player_mp2 - player_mp)
+            player_hp += hp_healed
+            player_mp += mp_healed
+            action_result = f"{player_name}はHPを{hp_healed}、MPを{mp_healed}回復した。\n\n"
     elif player_ch == 'run' and monster_ch == '0':
         return convert_newlines_to_br(f"{player_name}は逃げ出し、成功した。"), [None, None]
     else:
