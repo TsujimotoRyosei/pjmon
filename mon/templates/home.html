@@ -3,22 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <title>ダンジョン - プレイヤー登録</title>
+    <link rel="stylesheet" href="/static/design/home.css" />
   </head>
   <body>
-    <h1>ダンジョン</h1>
-    <p>
-      <strong>ゲームの概要：</strong>
-      <br />
-      不気味なダンジョンが目の前に広がっています。
-      <br />
-      このダンジョンには恐ろしいモンスターが潜んでおり、無事に脱出するにはすべてのモンスターを倒さなければなりません。
-      <br />
-      あなたはこの冒険を無事に終え、栄光を掴むことができるでしょうか？
-    </p>
-    <form action="/player_status" method="post">
-      <label for="username">プレイヤーの名前を入力してください:</label>
-      <input type="text" id="username" name="username" required />
-      <button type="submit">確定</button>
-    </form>
+    <div class="container">
+      <h1>ダンジョン</h1>
+      <p class="description">
+        <strong>ゲームの概要：</strong>
+        <br />
+        不気味なダンジョンが目の前に広がっています。
+        <br />
+        このダンジョンには恐ろしいモンスターが潜んでおり、無事に脱出するにはすべてのモンスターを倒さなければなりません。
+        <br />
+        あなたはこの冒険を無事に終え、栄光を掴むことができるでしょうか？
+      </p>
+      <form action="/player_status" method="post" class="form">
+        <label for="username">プレイヤーの名前を入力してください</label>
+        <input type="text" id="username" name="username" required />
+        <button type="submit" class="button">確定</button>
+      </form>
+    </div>
   </body>
 </html>

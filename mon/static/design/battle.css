@@ -1,0 +1,134 @@
+/* 全体のスタイル */
+body {
+    font-family: 'Verdana', sans-serif;
+    background: linear-gradient(135deg, #a8dadc, #457b9d);
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 32px;
+    color: #1d3557;
+    margin-bottom: 20px;
+  }
+  
+  /* モンスター画像 */
+  .monster-image {
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 8px;
+  }
+  
+  /* コンテナ */
+  .container {
+    display: flex;
+    gap: 20px;
+    max-width: 800px;
+    width: 100%;
+  }
+  
+  /* バトルエリア */
+  .battle-area {
+    flex-grow: 1;
+    background-color: #f1faee;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* モンスター出現メッセージ */
+  .monster-appearance {
+    font-size: 18px;
+    color: #e63946;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  /* モンスターHP */
+  .monster-hp {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  /* バトルログ */
+  .battle-log {
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    height: 150px;
+    overflow-y: auto;
+  }
+  
+  /* アクションボタン */
+  .action-buttons .button {
+    background-color: #1d3557;
+    color: #f1faee;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .action-buttons .button:hover {
+    background-color: #457b9d;
+    transform: scale(1.05);
+  }
+  
+  /* ステータスエリア */
+  .status-area {
+    width: 200px;
+    padding: 15px;
+    background-color: #f1faee;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* モーダル */
+  .modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .modal-button {
+    background-color: #1d3557;
+    color: #f1faee;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .modal-button:hover {
+    background-color: #457b9d;
+    transform: scale(1.05);
+  }
+  
