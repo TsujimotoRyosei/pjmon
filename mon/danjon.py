@@ -73,9 +73,10 @@ def battle(monster_data, player_data, player_ch):
         player_mp = player_mp2 + 10
         player_hp2, player_mp2 = player_hp, player_mp
         player_data = [player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count]
+        monster_hp = 0
         return convert_newlines_to_br(action_result), [None, player_data]
     elif player_hp <= 0:
-        return convert_newlines_to_br(f"{player_name}は倒れた。\nゲームオーバー。"), [None, None]
+        return f"{player_name}は倒れた。ゲームオーバー。", [None, None]
 
     monster_data = [monster_name, monster_hp]
     player_data = [player_name, player_level, player_hp, player_hp2, player_mp, player_mp2, count]

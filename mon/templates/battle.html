@@ -18,6 +18,25 @@
         border: 1px solid #ccc;
         background-color: #f9f9f9;
       }
+
+      /* モーダルのスタイル */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+      }
+      .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+      }
     </style>
   </head>
   <body>
@@ -59,19 +78,41 @@
       </div>
     </div>
 
+    <!-- ゲームオーバー時のモーダル -->
+    <div id="game-over-modal" class="modal">
+      <div class="modal-content">
+        <p id="game-over-message"></p>
+        <button onclick="redirectToGameOver()">終了</button>
+      </div>
+    </div>
+
+    <!-- ゲームクリア時のモーダル -->
+    <div id="game-clear-modal" class="modal">
+      <div class="modal-content">
+        <p id="game-clear-message">
+          全てのモンスターを倒しました！おめでとうございます！
+        </p>
+        <button onclick="redirectToGameClear()">終了</button>
+      </div>
+    </div>
+
     <script>
       async function takeAction(action) {
         const response = await fetch(`/battle_action?action=${action}`);
         const data = await response.json();
 
-        // ゲームクリア時に「モンスターを倒した」メッセージを表示し、数秒後にend.htmlにリダイレクト
+        // ゲームクリア時にモーダルでメッセージを表示
         if (data.game_clear) {
-          document.getElementById("battle-log").innerHTML =
-            "<p>全てのモンスターを倒しました！</p>";
-          setTimeout(() => {
-            window.location.href = "/end"; // end.htmlに遷移
-          }, 3000); // 3秒後にリダイレクト
-          return; // リダイレクト後に処理を中断
+          document.getElementById("game-clear-modal").style.display = "flex"; // モーダルを表示
+          return;
+        }
+
+        // プレイヤーが倒れた場合（ゲームオーバー）
+        if (data.game_over) {
+          document.getElementById("game-over-message").textContent =
+            data.result;
+          document.getElementById("game-over-modal").style.display = "flex"; // モーダルを表示
+          return;
         }
 
         // 新しいモンスターが出現した場合の処理
@@ -115,6 +156,16 @@
           document.getElementById("player-hp").textContent = data.player.hp;
           document.getElementById("player-mp").textContent = data.player.mp;
         }
+      }
+
+      // ゲームオーバー画面に遷移する関数
+      function redirectToGameOver() {
+        window.location.href = "/end?game_over=true";
+      }
+
+      // ゲームクリア画面に遷移する関数
+      function redirectToGameClear() {
+        window.location.href = "/end";
       }
     </script>
   </body>

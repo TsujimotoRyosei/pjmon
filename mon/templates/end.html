@@ -2,13 +2,25 @@
 <html lang="ja">
   <head>
     <meta charset="UTF-8" />
-    <title>ゲームクリア</title>
+    <title>エンド画面</title>
   </head>
   <body>
-    <h1>おめでとうございます！ゲームクリアです！</h1>
-    <p>
+    <h1 id="end-message">おめでとうございます！ゲームクリアです！</h1>
+    <p id="end-description">
       全てのモンスターを倒しました。再挑戦するには、ホーム画面に戻ってください。
     </p>
     <a href="/">ホーム</a>
+
+    <script>
+      // URL パラメータでゲームオーバーかゲームクリアかを判定
+      const urlParams = new URLSearchParams(window.location.search);
+      const gameOver = urlParams.get("game_over");
+
+      if (gameOver) {
+        document.getElementById("end-message").textContent = "ゲームオーバー";
+        document.getElementById("end-description").textContent =
+          "また挑戦してください。";
+      }
+    </script>
   </body>
 </html>

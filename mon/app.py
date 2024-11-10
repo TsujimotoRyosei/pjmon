@@ -52,6 +52,16 @@ async def battle_action(request: Request, action: str = Query(...)):
     result, updated_data = battle(game_state["monster_data"], game_state["player_data"], action)
     game_state["monster_data"], game_state["player_data"] = updated_data
     
+    # プレイヤーが倒れた場合の処理
+    if game_state["player_data"] is None:
+        return {
+            "result": result,
+            "monster": None,
+            "player": None,
+            "game_clear": False,
+            "game_over": True  # ゲームオーバーフラグを追加
+        }
+    
     # 新しいモンスターを生成
     if game_state["monster_data"] is None and game_state["player_data"]:
         game_state["monster_data"], game_state["player_data"] = monsterbox(game_state["player_data"])
@@ -86,7 +96,8 @@ async def battle_action(request: Request, action: str = Query(...)):
         "monster_image": f"/monster_images/{new_monster_image}" if new_monster_image else None,
         "monster_name": new_monster_name,
         "monster_hp": new_monster_hp,
-        "game_clear": False
+        "game_clear": False,
+        "game_over": False
     }
 
 @app.get("/end", response_class=HTMLResponse)
