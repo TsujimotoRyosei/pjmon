@@ -10,6 +10,7 @@ app = FastAPI()
 templates = Jinja2Templates(directory="mon/templates")
 
 app.mount("/monster_images", StaticFiles(directory="mon/monster_images"), name="monster_images")
+app.mount("/static", StaticFiles(directory="mon/static"), name="static")
 
 game_state = {"player_data": None, "monster_data": None, "initial_appearance": True}
 
