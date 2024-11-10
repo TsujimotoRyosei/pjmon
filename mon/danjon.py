@@ -43,16 +43,19 @@ def battle(monster_data, player_data, player_ch):
         else:
             monster_hp -= player_at
             action_result = f"{player_name}は剣で攻撃をした。\n{monster_name}に{player_at}ダメージを与えた。\n\n"
-    elif player_ch == 'magic' and player_mp >= 20:
-        if player_qh == '1':
-            player_mt = int(player_mt * 2)
-            monster_hp -= player_mt
-            player_mp -= 20
-            action_result = f"{player_name}は魔法で攻撃をした。\n{player_name}はクリティカルヒットを出した！\n{monster_name}に{player_mt}ダメージを与えた。\n\n"
+    elif player_ch == 'magic':
+        if player_mp >= 20:
+            if player_qh == '1':
+                player_mt = int(player_mt * 2)
+                monster_hp -= player_mt
+                player_mp -= 20
+                action_result = f"{player_name}は魔法で攻撃をした。\n{player_name}はクリティカルヒットを出した！\n{monster_name}に{player_mt}ダメージを与えた。\n\n"
+            else:
+                monster_hp -= player_mt
+                player_mp -= 20
+                action_result = f"{player_name}は魔法で攻撃をした。\n{monster_name}に{player_mt}ダメージを与えた。\n\n"
         else:
-            monster_hp -= player_mt
-            player_mp -= 20
-            action_result = f"{player_name}は魔法で攻撃をした。\n{monster_name}に{player_mt}ダメージを与えた。\n\n"
+            action_result = f"{player_name}のMPが足りない。\n\n"
     elif player_ch == 'heal':
         if player_qh == '1':
             # HPとMPを全回復する
