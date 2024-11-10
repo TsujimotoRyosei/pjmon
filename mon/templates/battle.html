@@ -23,6 +23,7 @@
   <body>
     <h1>バトル開始</h1>
     <img
+      id="monster-image"
       src="{{ monster_image }}"
       alt="{{ monster.name }}"
       style="width: 150px; height: auto; margin-bottom: 20px"
@@ -37,7 +38,8 @@
           id="monster-hp"
           style="display: {{ 'block' if monster.hp else 'none' }}"
         >
-          {{ monster.name }}のHP: <span id="current-hp">{{ monster.hp }}</span>
+          <span id="monster-name">{{ monster.name }}</span>のHP:
+          <span id="current-hp">{{ monster.hp }}</span>
         </p>
         <div id="battle-log">{{ result if result else "" }}</div>
         <div>
@@ -62,11 +64,39 @@
         const response = await fetch(`/battle_action?action=${action}`);
         const data = await response.json();
 
-        document.getElementById(
-          "battle-log"
-        ).innerHTML = `<p>${data.result}</p>`;
-        document.getElementById("monster-appearance").style.display = "none";
+        // ゲームクリア時に「モンスターを倒した」メッセージを表示し、数秒後にend.htmlにリダイレクト
+        if (data.game_clear) {
+          document.getElementById("battle-log").innerHTML =
+            "<p>全てのモンスターを倒しました！</p>";
+          setTimeout(() => {
+            window.location.href = "/end"; // end.htmlに遷移
+          }, 3000); // 3秒後にリダイレクト
+          return; // リダイレクト後に処理を中断
+        }
 
+        // 新しいモンスターが出現した場合の処理
+        if (data.monster_name) {
+          document.getElementById("battle-log").innerHTML = "";
+          document.getElementById("monster-appearance").textContent =
+            data.monster_name + " が出現しました！";
+          document.getElementById("monster-appearance").style.display = "block";
+
+          // モンスターの名前、画像、HPを更新
+          document.getElementById("monster-image").src = data.monster_image;
+          document.getElementById("monster-image").alt = data.monster_name;
+          document.getElementById("monster-name").textContent =
+            data.monster_name;
+          document.getElementById("current-hp").textContent = data.monster_hp;
+          document.getElementById("monster-hp").style.display = "block";
+        } else {
+          // モンスターが倒されていない場合のログ更新
+          document.getElementById(
+            "battle-log"
+          ).innerHTML = `<p>${data.result}</p>`;
+          document.getElementById("monster-appearance").style.display = "none";
+        }
+
+        // モンスターのHPがある場合は更新、ない場合は非表示
         if (data.monster && data.monster.hp !== null) {
           document.getElementById("current-hp").textContent = data.monster.hp;
           document.getElementById("monster-hp").style.display = "block";
@@ -74,12 +104,16 @@
           document.getElementById("monster-hp").style.display = "none";
         }
 
+        // プレイヤーのステータスを更新
         document.getElementById("player-hp").textContent = data.player.hp;
         document.getElementById("player-mp").textContent = data.player.mp;
 
-        if (data.player && data.player.level) {
+        // レベルアップ時、ステータス画面のレベル、HP、MPを更新
+        if (data.result.includes("レベルが1上がった")) {
           document.getElementById("player-level").textContent =
             data.player.level;
+          document.getElementById("player-hp").textContent = data.player.hp;
+          document.getElementById("player-mp").textContent = data.player.mp;
         }
       }
     </script>

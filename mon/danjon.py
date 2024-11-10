@@ -54,7 +54,14 @@ def battle(monster_data, player_data, player_ch):
     
     if monster_hp > 0:
         # モンスターが攻撃
-        monster_attack = random.randint(10, 16)  # モンスターの攻撃力
+        if monster_name == 'スライム':
+            monster_attack = random.randint(10, 16)
+        elif monster_name == 'ゴブリン':
+            monster_attack = random.randint(20, 26)
+        elif monster_name == 'オーク':
+            monster_attack = random.randint(25, 30)
+        elif monster_name == 'ドラゴン':
+            monster_attack = random.randint(30, 41)
         player_hp -= monster_attack
         action_result += f"{monster_name}が攻撃してきた！\n{player_name}は{monster_attack}のダメージを受けた。\n\n"    
 

@@ -30,24 +30,24 @@ async def player_status(request: Request, username: str = Form(...)):
 @app.post("/start_game", response_class=HTMLResponse)
 async def start_game(request: Request):
     game_state["monster_data"], game_state["player_data"] = monsterbox(game_state["player_data"])
-    game_state["initial_appearance"] = True  # 初回のモンスター出現時のみTrue
+    game_state["initial_appearance"] = True
     monster_data = {"name": game_state["monster_data"][0], 
                     "hp": game_state["monster_data"][1]}
-    # スライムの場合はスライムの画像を表示
-    if game_state["monster_data"][0] == "スライム":
-        monster_image = random.choice(["slime/slime1.jpeg", "slime/slime2.jpeg"])
-    elif game_state["monster_data"][0] == "ゴブリン":
-        monster_image = random.choice(["goblin/goblin1.jpeg", "goblin/goblin2.jpeg"])
-    elif game_state["monster_data"][0] == "オーク":
-        monster_image = random.choice(["orc/orc1.jpeg", "orc/orc2.jpeg"])
-    elif game_state["monster_data"][0] == "ドラゴン":
-        monster_image = random.choice(["dragon/dragon1.jpeg", "dragon/dragon2.jpeg"])
-    return templates.TemplateResponse("battle.html", {"request": request, "player": game_state["player_data"], "monster": monster_data, "initial_appearance": game_state["initial_appearance"],"monster_image": f"/monster_images/{monster_image}",})
+    monster_image = get_monster_image_path(game_state["monster_data"][0])
+    return templates.TemplateResponse("battle.html", {"request": request, "player": game_state["player_data"], "monster": monster_data, "initial_appearance": game_state["initial_appearance"], "monster_image": f"/monster_images/{monster_image}"})
+
+def get_monster_image_path(monster_name):
+    if monster_name == "スライム":
+        return random.choice(["slime/slime1.jpeg", "slime/slime2.jpeg"])
+    elif monster_name == "ゴブリン":
+        return random.choice(["goblin/goblin1.jpeg", "goblin/goblin2.jpeg"])
+    elif monster_name == "オーク":
+        return random.choice(["orc/orc1.jpeg", "orc/orc2.jpeg"])
+    elif monster_name == "ドラゴン":
+        return random.choice(["dragon/dragon1.jpeg", "dragon/dragon2.jpeg"])
 
 @app.get("/battle_action", response_class=JSONResponse)
 async def battle_action(request: Request, action: str = Query(...)):
-    if game_state["monster_data"] is None:
-        return JSONResponse({"result": "新しいモンスターを生成する必要があります。"}, status_code=400)
 
     result, updated_data = battle(game_state["monster_data"], game_state["player_data"], action)
     game_state["monster_data"], game_state["player_data"] = updated_data
@@ -57,8 +57,16 @@ async def battle_action(request: Request, action: str = Query(...)):
         game_state["monster_data"], game_state["player_data"] = monsterbox(game_state["player_data"])
         if game_state["monster_data"] is None:
             # 全てのモンスターを倒した場合
-            return {"result": "ゲームクリア！ おめでとうございます！", "monster": None, "player": None}
+            return {"result": "ゲームクリア！ おめでとうございます！", "monster": None, "player": None, "game_clear": True}
 
+        # 新しいモンスターが出現した場合の画像と名前とHP
+        new_monster_image = get_monster_image_path(game_state["monster_data"][0])
+        new_monster_name = game_state["monster_data"][0]
+        new_monster_hp = game_state["monster_data"][1]
+    else:
+        new_monster_image = None
+        new_monster_name = None
+        new_monster_hp = None
 
     # モンスターが倒された場合、HPを None として返す
     monster_data = {
@@ -69,10 +77,21 @@ async def battle_action(request: Request, action: str = Query(...)):
         "hp": game_state["player_data"][2],
         "mp": game_state["player_data"][4],
         "level": game_state["player_data"][1]
-
     }
 
-    return {"result": result, "monster": monster_data, "player": player_data}
+    return {
+        "result": result,
+        "monster": monster_data,
+        "player": player_data,
+        "monster_image": f"/monster_images/{new_monster_image}" if new_monster_image else None,
+        "monster_name": new_monster_name,
+        "monster_hp": new_monster_hp,
+        "game_clear": False
+    }
+
+@app.get("/end", response_class=HTMLResponse)
+async def end(request: Request):
+    return templates.TemplateResponse("end.html", {"request": request})
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)

@@ -8,7 +8,7 @@
     {% if player %}
     <h1>プレイヤー情報</h1>
     <p>プレイヤー名：{{ player.username }}</p>
-    <p>プレイヤーレベル：{{ player.level }}</p>
+    <p>レベル：{{ player.level }}</p>
     <p>HP：{{ player.hp }}</p>
     <p>MP：{{ player.mp }}</p>
     <form action="/start_game" method="post">
