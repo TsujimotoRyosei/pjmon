@@ -3,24 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <title>エンド画面</title>
-    <style>
-      .button {
-        display: inline-block;
-        padding: 10px 20px;
-        font-size: 16px;
-        color: white;
-        background-color: #007bff;
-        border: none;
-        border-radius: 5px;
-        text-decoration: none;
-        cursor: pointer;
-      }
-      .button:hover {
-        background-color: #0056b3;
-      }
-    </style>
+    <link rel="stylesheet" href="/static/design/end.css" />
   </head>
-  <body>
+  <body class="end-screen">
     <h1 id="end-message">おめでとうございます！ゲームクリアです！</h1>
     <p id="end-description">
       全てのモンスターを倒しました。再挑戦するには、ホーム画面に戻ってください。
@@ -28,14 +13,16 @@
     <a href="/" class="button">ホーム</a>
 
     <script>
-      // URL パラメータでゲームオーバーかゲームクリアかを判定
       const urlParams = new URLSearchParams(window.location.search);
       const gameOver = urlParams.get("game_over");
 
       if (gameOver) {
+        document.body.classList.add("game-over");
         document.getElementById("end-message").textContent = "ゲームオーバー";
         document.getElementById("end-description").textContent =
           "また挑戦してください。";
+      } else {
+        document.body.classList.add("game-clear");
       }
     </script>
   </body>

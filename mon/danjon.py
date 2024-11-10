@@ -101,7 +101,7 @@ def battle(monster_data, player_data, player_ch):
 def main():
     player_data = playerpm()
     monster_data, player_data = monsterbox(player_data)
-    result, _ = battle(monster_data, player_data, "attack")  # 仮のテストとして"attack"を渡す
+    result, _ = battle(monster_data, player_data, "heal")  # 仮のテストとして"attack"を渡す
     print(result)
 
 if __name__ == "__main__":

@@ -1,0 +1,74 @@
+/* 全体のスタイル */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+    text-align: center;
+    transition: background-color 0.5s ease;
+}
+
+/* ゲームクリア時のスタイル */
+body.game-clear {
+    background-color: #3e8e41; /* グリーン系の明るい背景 */
+    background-image: linear-gradient(45deg, #3e8e41, #7fd77f);
+}
+
+body.game-clear h1 {
+    color: #fff7d6; /* 明るい黄色系の文字色 */
+}
+
+body.game-clear p {
+    color: #f1ffe7;
+}
+
+/* ゲームオーバー時のスタイル */
+body.game-over {
+    background-color: #800020; /* 濃いレッドの暗い背景 */
+    background-image: linear-gradient(45deg, #800020, #b3002d);
+}
+
+body.game-over h1 {
+    color: #ffb3b3; /* 暗い背景に映える明るいピンク色 */
+}
+
+body.game-over p {
+    color: #ffd6d6;
+}
+
+/* ボタンのスタイル */
+.button {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 18px;
+    color: white;
+    background-color: #007bff;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+/* 共通スタイル */
+h1 {
+    font-size: 36px;
+    margin-bottom: 16px;
+}
+
+p {
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 20px;
+}
