@@ -29,7 +29,6 @@ def battle(monster_data, player_data, player_ch):
     player_at = random.randint(10, 16)
     player_mt = random.randint(20, 31)
     player_rc = random.randint(25, 41)
-    monster_ch = random.choice(['0', '1'])
     player_qh = random.choice(['0', '1'])
     
     if count > 0: #レベルアップによる攻撃力アップ
@@ -39,19 +38,17 @@ def battle(monster_data, player_data, player_ch):
     if player_ch == 'attack':
         if player_qh == '1':
             player_at = int(player_at * 1.5)
-            action_result = f"{player_name}はクリティカルヒットを出した！\n"
             monster_hp -= player_at
-            action_result += f"{player_name}は剣で攻撃をした。\n{monster_name}に{player_at}ダメージを与えた。\n\n"
+            action_result = f"{player_name}は剣で攻撃をした。\n{player_name}はクリティカルヒットを出した！\n{monster_name}に{player_at}ダメージを与えた。\n\n"
         else:
             monster_hp -= player_at
             action_result = f"{player_name}は剣で攻撃をした。\n{monster_name}に{player_at}ダメージを与えた。\n\n"
     elif player_ch == 'magic' and player_mp >= 20:
         if player_qh == '1':
             player_mt = int(player_mt * 2)
-            action_result = f"{player_name}はクリティカルヒットを出した！\n"
             monster_hp -= player_mt
             player_mp -= 20
-            action_result += f"{player_name}は魔法で攻撃をした。\n{monster_name}に{player_mt}ダメージを与えた。\n\n"
+            action_result = f"{player_name}は魔法で攻撃をした。\n{player_name}はクリティカルヒットを出した！\n{monster_name}に{player_mt}ダメージを与えた。\n\n"
         else:
             monster_hp -= player_mt
             player_mp -= 20
@@ -68,8 +65,6 @@ def battle(monster_data, player_data, player_ch):
             player_hp += hp_healed
             player_mp += mp_healed
             action_result = f"{player_name}はHPを{hp_healed}、MPを{mp_healed}回復した。\n\n"
-    elif player_ch == 'run' and monster_ch == '0':
-        return convert_newlines_to_br(f"{player_name}は逃げ出し、成功した。"), [None, None]
     else:
         action_result = f"{player_name}の行動は不明です。"
     
